@@ -1,66 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Sitio temporal — acceso con clave</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>Acceso protegido</title>
   <style>
-    body { font-family: system-ui, Arial; margin:0; padding:24px; background:#f6f7fb; color:#111; text-align:center; }
-    .card { max-width:900px; margin:0 auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 6px 18px rgba(20,30,60,0.08); }
-    h1 { margin-top:0; }
-    .inputs { margin:20px 0; }
-    input[type="password"] { padding:10px 12px; width:240px; border-radius:6px; border:1px solid #cbd5e1; }
-    button { padding:10px 14px; border-radius:6px; border:none; background:#2563eb; color:white; cursor:pointer; margin-left:8px; }
-    #protected { display:none; margin-top:18px; }
-    img { max-width:45%; height:auto; margin:10px; border-radius:6px; border:1px solid #e6eef9; }
-    .note { font-size:13px; color:#666; margin-top:12px; }
+    #contenido {
+      display: none;
+      margin-top: 20px;
+    }
+    img {
+      margin: 10px;
+      max-width: 300px;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Acceso protegido (temporal)</h1>
-    <p>Introduce la contraseña para ver las imágenes y descargar el PDF.</p>
+  <h1>Acceso protegido</h1>
+  <p>Introduce la contraseña para acceder al contenido:</p>
+  <input type="password" id="clave" />
+  <button onclick="verificarClave()">Entrar</button>
+  <p id="mensaje" style="color:red;"></p>
 
-    <div class="inputs">
-      <input id="pw" type="password" placeholder="Contraseña">
-      <button id="enterBtn">Entrar</button>
-    </div>
+  <div id="contenido">
+    <h2>Imágenes</h2>
+    <img src="image1.jpg" alt="Imagen 1" />
+    <img src="image2.jpg" alt="Imagen 2" />
 
-    <div id="protected" aria-hidden="true">
-      <h2>Contenido</h2>
-      <div>
-        <img src="imagen1.jpg" alt="Imagen 1">
-        <img src="imagen2.jpg" alt="Imagen 2">
-      </div>
-      <p style="margin-top:14px;">
-        <a id="pdfLink" href="documento_protegido.pdf" download>Descargar PDF protegido</a>
-      </p>
-      <p class="note">Nota: esta protección es en el navegador; si alguien inspecciona el código puede ver la contraseña.</p>
-    </div>
+    <h2>Documento PDF</h2>
+    <a href="CS- de prueba.pdf" target="_blank" download>Descargar PDF protegido</a>
   </div>
 
   <script>
-    // -------- CONFIGURA ESTO ----------
-    const PASSWORD = "miClaveSecreta"; // cambia esto por tu contraseña
-    // ----------------------------------
+    const claveCorrecta = "00000";
 
-    document.getElementById('enterBtn').addEventListener('click', check);
-    document.getElementById('pw').addEventListener('keypress', function(e){
-      if(e.key === 'Enter') check();
-    });
-
-    function check() {
-      const v = document.getElementById('pw').value;
-      if (!v) return alert('Introduce la contraseña');
-      if (v === PASSWORD) {
-        document.getElementById('protected').style.display = 'block';
-        document.getElementById('protected').setAttribute('aria-hidden','false');
-        // evita que el campo muestre la contraseña después
-        document.getElementById('pw').value = '';
+    function verificarClave() {
+      const clave = document.getElementById("clave").value;
+      const contenido = document.getElementById("contenido");
+      const mensaje = document.getElementById("mensaje");
+      if (clave === claveCorrecta) {
+        contenido.style.display = "block";
+        mensaje.textContent = "";
       } else {
-        alert('Contraseña incorrecta');
+        mensaje.textContent = "Contraseña incorrecta. Intenta de nuevo.";
+        contenido.style.display = "none";
       }
     }
   </script>
 </body>
 </html>
+
